@@ -6,3 +6,10 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# Build output and tool caches
+.task/
+.wails/
+/bin/
+frontend/dist/
+frontend/node_modules/

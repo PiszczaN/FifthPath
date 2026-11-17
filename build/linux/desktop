@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=My Product
+Comment=A FifthPath application
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/fifthpath.exe %u
+Terminal=false
+Type=Application
+Icon=fifthpath.exe
+Categories=Utility;
+StartupWMClass=fifthpath.exe
+
+ 
