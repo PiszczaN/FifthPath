@@ -11,4 +11,3 @@ indent_size = 2
 # gofmt indents Go code with tabs.
 [{*.go,go.mod}]
 indent_style = tab
-
