@@ -1,0 +1,6 @@
+# pnpm settings for the frontend. Since pnpm 11, .npmrc holds only
+# registry and auth settings; everything else lives here.
+
+# Refuse package versions published less than 7 days ago
+# to limit exposure to freshly compromised releases.
+minimumReleaseAge: 10080
