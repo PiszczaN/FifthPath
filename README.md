@@ -1,6 +1,6 @@
 # FifthPath
 
-FifthPath tells whether a piece of music is in a major or a minor key by tracing its trajectory of fifths on the circle of fiths.
+FifthPath tells whether a piece of music is in a major or a minor key by tracing its trajectory of fifths on the circle of fifths.
 
 > **Status:** early development. This is a ground-up rewrite of a tool written
 > for a master's thesis, and nothing is usable yet.
