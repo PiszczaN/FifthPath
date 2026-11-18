@@ -1,13 +1,13 @@
 [Desktop Entry]
 Version=1.0
-Name=My Product
-Comment=A FifthPath application
+Name=FifthPath
+Comment=Major and minor mode detection for MIDI files
 # The Exec line includes %u to pass the URL to the application
-Exec=/usr/local/bin/fifthpath.exe %u
+Exec=/usr/local/bin/fifthpath %u
 Terminal=false
 Type=Application
-Icon=fifthpath.exe
+Icon=fifthpath
 Categories=Utility;
-StartupWMClass=fifthpath.exe
+StartupWMClass=fifthpath
 
  

@@ -1,17 +1,17 @@
 {
 	"fixed": {
-		"file_version": "0.1.0",
-		"product_version": "0.1.0"
+		"file_version": "0.0.0",
+		"product_version": "0.0.0"
 	},
 	"info": {
 		"0409": {
-			"FileVersion": "0.1.0",
-			"ProductVersion": "0.1.0",
-			"CompanyName": "My Company",
-			"FileDescription": "A FifthPath application",
-			"LegalCopyright": "© 2026, My Company",
-			"ProductName": "My Product",
-			"Comments": "This is a comment"
+			"FileVersion": "0.0.0",
+			"ProductVersion": "0.0.0",
+			"CompanyName": "Jakub Piszczan",
+			"FileDescription": "Major and minor mode detection for MIDI files",
+			"LegalCopyright": "Copyright (c) 2026, Jakub Piszczan",
+			"ProductName": "FifthPath",
+			"Comments": "https://github.com/PiszczaN/FifthPath"
 		}
 	}
 }
