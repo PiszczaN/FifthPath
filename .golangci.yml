@@ -1,0 +1,28 @@
+# golangci-lint configuration, format version 2.
+# Reference: https://golangci-lint.run/docs/configuration/file/
+version: "2"
+
+linters:
+  # errcheck, govet, ineffassign, staticcheck and unused.
+  default: standard
+  enable:
+    - errorlint # compare errors with errors.Is and errors.As, so wrapped errors still match
+    - misspell # American spelling in comments and strings
+    - modernize # current Go idioms: min, max, slices, range over int
+    - nolintlint # every //nolint names the linter and says why
+    - thelper # test helpers call t.Helper(), so a failure points at the test
+  settings:
+    misspell:
+      locale: US
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/PiszczaN/FifthPath
