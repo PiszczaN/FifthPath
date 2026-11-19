@@ -1,0 +1,28 @@
+// Biome formats and lints the frontend.
+// Reference: https://biomejs.dev/reference/configuration/
+{
+  // The schema shipped with the installed version, so the editor knows
+  // exactly the options this version supports.
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    // Skip everything git ignores: node_modules, dist, generated bindings.
+    "useIgnoreFile": true,
+    // The .gitignore file lives in the repository root, one level up.
+    "root": "../"
+  },
+  "formatter": {
+    // Same as the root .editorconfig, which Biome does not read from here.
+    "indentStyle": "space"
+  },
+  "linter": {
+    "rules": {
+      "preset": "recommended"
+    },
+    "domains": {
+      // Rules of hooks, effect dependencies, keys in lists.
+      "react": "recommended"
+    }
+  }
+}
