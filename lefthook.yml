@@ -1,0 +1,29 @@
+# Git hooks, managed by lefthook: https://lefthook.dev
+# Install them once per clone with: lefthook install
+min_version: 2.2.2
+# "**" matches any depth, the root included, as in most other tools.
+glob_matcher: doublestar
+
+pre-commit:
+  jobs:
+    - name: lint Go
+      glob:
+        - "**/*.go"
+        - "go.mod"
+        - ".golangci.yml"
+      run: task lint:go
+    - name: lint frontend
+      glob: "frontend/**"
+      run: task lint:frontend
+
+commit-msg:
+  jobs:
+    - name: check the commit message
+      # commitlint and its config live in the frontend package; the path in {1}
+      # is relative to the repository root, which commitlint expects.
+      run: pnpm --dir frontend exec commitlint --edit {1}
+
+pre-push:
+  jobs:
+    - name: run all checks
+      run: task check
