@@ -9,6 +9,8 @@ vars:
   # by `wails3 build GOOS=...` (or the GOOS env var) for cross-compilation. The
   # tasks below dispatch to the matching platform Taskfile via this variable.
   GOOS: '{{.GOOS | default OS}}'
+  # Every machine and CI use this golangci-lint release, so lint results agree.
+  GOLANGCI_LINT_VERSION: 2.15.0
 
 includes:
   common: ./build/Taskfile.yml
@@ -18,24 +20,127 @@ includes:
 
 tasks:
   build:
-    summary: Builds the application
+    desc: Build the app for this platform into bin/
+    deps:
+      - tools:wails3
     cmds:
       - task: "{{.GOOS}}:build"
 
   package:
-    summary: Packages a production build of the application
+    desc: Packages a production build of the application
     cmds:
       - task: "{{.GOOS}}:package"
 
   run:
-    summary: Runs the application
+    desc: Runs the application
     cmds:
       - task: "{{.GOOS}}:run"
 
   dev:
-    summary: Runs the application in development mode
+    desc: Runs the application in development mode
+    deps:
+      - tools:wails3
     cmds:
       - wails3 dev -config ./build/config.yml -port {{.VITE_PORT}}
+
+  check:
+    desc: Run everything CI checks - lint, types and tests
+    cmds:
+      - task: lint
+      - task: typecheck
+      - task: test
+
+  lint:
+    desc: Lint Go and frontend code, formatting included
+    cmds:
+      - task: lint:go
+      - task: lint:frontend
+
+  lint:fix:
+    desc: Format Go and frontend code and apply safe lint fixes
+    deps:
+      - tools:golangci-lint
+      - common:build:frontend
+    cmds:
+      - golangci-lint run --fix
+      - pnpm --dir frontend lint:fix
+
+  lint:go:
+    desc: Lint Go code with golangci-lint
+    deps:
+      - tools:golangci-lint
+      # go:embed needs frontend/dist. Task skips the build while nothing changed.
+      - common:build:frontend
+    cmds:
+      - golangci-lint run
+
+  lint:frontend:
+    desc: Lint frontend code with Biome
+    deps:
+      - common:install:frontend:deps
+    cmds:
+      - pnpm --dir frontend lint
+
+  typecheck:
+    desc: Type-check the frontend
+    deps:
+      - common:install:frontend:deps
+      - common:generate:bindings
+    cmds:
+      - pnpm --dir frontend typecheck
+
+  test:
+    desc: Run Go and frontend tests
+    cmds:
+      - task: test:go
+      - task: test:frontend
+
+  test:go:
+    desc: Run Go tests
+    deps:
+      - common:build:frontend
+    cmds:
+      - go test ./...
+
+  test:frontend:
+    desc: Run frontend tests with Vitest
+    deps:
+      - common:install:frontend:deps
+      # The Wails Vite plugin stops Vitest when the bindings are missing.
+      - common:generate:bindings
+    cmds:
+      - pnpm --dir frontend test
+
+  tools:wails3:
+    summary: Fails when the wails3 CLI does not match the Wails module in go.mod
+    internal: true
+    vars:
+      CLI_VERSION:
+        # wails3 prints its version on stderr; 2>&1 captures it.
+        sh: wails3 version 2>&1
+      MODULE:
+        sh: go list -m github.com/wailsapp/wails/v3
+      # "github.com/wailsapp/wails/v3 v3.1.0" -> "v3.1.0"
+      MODULE_VERSION: '{{.MODULE | trimPrefix "github.com/wailsapp/wails/v3 "}}'
+    preconditions:
+      - sh: '[ "{{.CLI_VERSION}}" = "{{.MODULE_VERSION}}" ]'
+        msg: |
+          The wails3 CLI is {{.CLI_VERSION}}, but go.mod uses Wails {{.MODULE_VERSION}}.
+          Install the matching CLI:
+            go install github.com/wailsapp/wails/v3/cmd/wails3@{{.MODULE_VERSION}}
+
+  tools:golangci-lint:
+    summary: Fails when golangci-lint is not the version this project uses
+    internal: true
+    vars:
+      VERSION:
+        sh: golangci-lint version --short
+    preconditions:
+      - sh: '[ "{{.VERSION}}" = "{{.GOLANGCI_LINT_VERSION}}" ]'
+        msg: |
+          golangci-lint is {{.VERSION}}, but this project uses {{.GOLANGCI_LINT_VERSION}}.
+          Install it:
+            go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v{{.GOLANGCI_LINT_VERSION}}
 
   install:msix:tools:
     summary: Installs tools required for Windows MSIX packaging
