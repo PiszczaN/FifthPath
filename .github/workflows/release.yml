@@ -1,0 +1,31 @@
+# On every push to main, keeps a release pull request up to date; once that
+# pull request is merged, tags the version and publishes a GitHub release.
+# Docs: https://github.com/googleapis/release-please-action
+name: Release
+on:
+  push:
+    branches: [main]
+
+# Nothing by default; the job asks for what it needs.
+permissions: {}
+
+# One run at a time: a newer push waits instead of cancelling a run.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    permissions:
+      # Commit the version bump and the changelog, create tags and releases.
+      contents: write
+      # Open and update the release pull request.
+      pull-requests: write
+      # Create and apply the autorelease labels.
+      issues: write
+    steps:
+      # Reads release-please-config.json and .release-please-manifest.json
+      # through the GitHub API, so no checkout is needed.
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
