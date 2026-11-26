@@ -2,6 +2,13 @@
   "name": "fifthpath-frontend",
   "private": true,
   "packageManager": "pnpm@12.19.0",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^26",
+      "onFail": "error"
+    }
+  },
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -9,7 +16,7 @@
     "build:dev": "tsc -b && vite build --minify false --mode development",
     "build": "tsc -b && vite build --mode production",
     "preview": "vite preview",
-    "lint": "biome check",
+    "lint": "biome ci",
     "lint:fix": "biome check --write",
     "typecheck": "tsc -b",
     "test": "vitest run",
