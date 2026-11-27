@@ -1,6 +1,6 @@
 # This file contains the configuration for this project.
-# When you update `info` or `fileAssociations`, run `wails3 task common:update:build-assets` to update the assets.
-# Note that this will overwrite any changes you have made to the assets.
+# `task build` and `task package` regenerate the platform files in build/ from
+# `info` and `fileAssociations` whenever this file changes; they are not committed.
 version: '3'
 
 # This information is used to generate the build assets.
@@ -9,7 +9,7 @@ info:
   productName: "FifthPath" # The name of the application
   productIdentifier: "io.github.piszczan.fifthpath" # The unique product identifier
   description: "Major and minor mode detection for MIDI files" # The application description
-  copyright: "Copyright (c) 2026, Jakub Piszczan" # Copyright text
+  copyright: "Copyright (c) 2026 Jakub Piszczan" # Copyright text
   comments: "https://github.com/PiszczaN/FifthPath" # Comments
   version: "0.0.0" # The application version; release-please bumps it (x-release-please-version)
   # cfBundleIconName: "appicon" # The macOS icon name in Assets.car icon bundles (optional)
