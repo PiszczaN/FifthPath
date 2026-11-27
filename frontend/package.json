@@ -6,7 +6,7 @@
     "runtime": {
       "name": "node",
       "version": "^26",
-      "onFail": "error"
+      "onFail": "warn"
     }
   },
   "version": "0.0.0",
