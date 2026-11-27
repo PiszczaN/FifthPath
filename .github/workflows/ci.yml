@@ -40,51 +40,6 @@ jobs:
       - name: Run all checks
         run: task check
 
+  # Windows, macOS and Linux builds, shared with release.yml.
   build:
-    # A fixed name per platform, so a runner upgrade keeps the check name.
-    name: build (${{ matrix.platform }})
-    runs-on: ${{ matrix.runner }}
-    timeout-minutes: 20
-    strategy:
-      # A failure on one system does not cancel the builds on the others.
-      fail-fast: false
-      matrix:
-        include:
-          - platform: windows-amd64
-            runner: windows-2025
-            task: build
-            app: fifthpath.exe
-          - platform: macos-arm64
-            runner: macos-26
-            # A macOS app is a .app bundle: the package task builds it and
-            # signs it ad hoc.
-            task: package
-            app: fifthpath.app
-          - platform: linux-amd64
-            runner: ubuntu-26.04
-            task: build
-            app: fifthpath
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Set up the toolchain
-        uses: ./.github/actions/setup-toolchain
-
-      - name: Build the app
-        run: task ${{ matrix.task }}
-
-      # The zip that upload-artifact makes drops the executable bit, which the
-      # Linux binary and the binary inside the .app need; a tarball keeps it.
-      - name: Pack the app
-        shell: bash
-        run: tar -czf "fifthpath-${{ matrix.platform }}.tar.gz" -C bin "${{ matrix.app }}"
-
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          path: fifthpath-${{ matrix.platform }}.tar.gz
-          # Upload the tarball as it is; the artifact takes its file name.
-          archive: false
-          if-no-files-found: error
-          retention-days: 14
+    uses: ./.github/workflows/build.yml
