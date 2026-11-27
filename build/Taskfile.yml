@@ -196,6 +196,18 @@ tasks:
   update:build-assets:
     summary: Updates the build assets
     dir: build
+    # The generated files are not committed (see .gitignore). Task runs this
+    # again when config.yml changes or one of the files is missing.
+    sources:
+      - config.yml
+    generates:
+      - darwin/Info.plist
+      - darwin/Info.dev.plist
+      - linux/desktop
+      - linux/nfpm/nfpm.yaml
+      - windows/info.json
+      - windows/nsis/wails_tools.nsh
+      - windows/wails.exe.manifest
     cmds:
       - wails3 update build-assets -name "{{.APP_NAME}}" -binaryname "{{.APP_NAME}}" -config config.yml -dir .
 
