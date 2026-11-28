@@ -1,0 +1,66 @@
+# cspell checks the spelling of code, docs and commit messages.
+# Docs: https://cspell.org/docs/Configuration
+version: "0.2"
+# American English, as in the code
+language: en-US
+files: ["**"]
+useGitignore: true
+enableGlobDot: true
+ignorePaths:
+  # Git's own folder; the commit-msg hook checks the message by itself
+  - .git
+  # Platform files as Wails ships them
+  - build/appicon.icon
+  - build/darwin
+  - build/docker
+  - build/linux
+  - build/windows
+  # Written by release-please and by the go command
+  - CHANGELOG.md
+  - go.mod
+  # This file lists words that cspell does not know
+  - cspell.config.yaml
+# Go and npm package names, in every file type
+dictionaries: [golang, npm]
+overrides:
+  # The Wails API spells BackgroundColour the British way
+  - filename: "**/*.go"
+    ignoreWords: [Colour]
+words:
+  # People
+  - Jakub
+  - Kania
+  - Łukaszewicz
+  - Piszczan
+  # Repositories and packages
+  - evilmartians
+  - fifthpath
+  - libwebkitgtk
+  - wailsapp
+  - wailsio
+  # Go linters and tools
+  - errorlint
+  - gofmt
+  - golangci
+  - govet
+  - ineffassign
+  - nolint
+  - nolintlint
+  - thelper
+  # Other tools and their settings
+  - actool
+  - autorelease
+  - doublestar
+  - gomod
+  - msix
+  - nfpm
+  - nsis
+  - Taskfile
+  # Variables in the Wails build Taskfile and config
+  - appicon
+  - binaryname
+  - devserver
+  - iconcomposerinput
+  - macassetdir
+  - macfilename
+  - windowsfilename

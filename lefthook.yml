@@ -15,6 +15,9 @@ pre-commit:
     - name: lint frontend
       glob: "frontend/**"
       run: task lint:frontend
+    - name: check spelling
+      # The spell script reads paths relative to the repository root.
+      run: pnpm --dir frontend spell --no-must-find-files --file {staged_files}
 
 commit-msg:
   jobs:
@@ -22,6 +25,9 @@ commit-msg:
       # commitlint and its config live in the frontend package; the path in {1}
       # is relative to the repository root, which commitlint expects.
       run: pnpm --dir frontend exec commitlint --edit {1}
+    - name: check the spelling of the message
+      # cspell skips .git, so --force-check makes it read this one file.
+      run: pnpm --dir frontend spell --no-summary --language-id commit-msg --force-check --file {1}
 
 pre-push:
   jobs:
