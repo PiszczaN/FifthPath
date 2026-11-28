@@ -54,10 +54,11 @@ tasks:
       - task: test
 
   lint:
-    desc: Lint Go and frontend code, formatting included
+    desc: Lint Go and frontend code, formatting included, and check spelling
     cmds:
       - task: lint:go
       - task: lint:frontend
+      - task: lint:spelling
 
   lint:fix:
     desc: Format Go and frontend code and apply safe lint fixes
@@ -83,6 +84,13 @@ tasks:
       - common:install:frontend:deps
     cmds:
       - pnpm --dir frontend lint
+
+  lint:spelling:
+    desc: Check spelling in code, docs and config with cspell
+    deps:
+      - common:install:frontend:deps
+    cmds:
+      - pnpm --dir frontend spell
 
   typecheck:
     desc: Type-check the frontend

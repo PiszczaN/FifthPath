@@ -38,8 +38,10 @@ Then run these in the repository root:
 | --- | --- |
 | `lefthook install` | Turns on the Git hooks, once per clone |
 | `task dev` | Runs the app with live reload |
-| `task check` | Runs everything CI checks: lint, types and tests |
+| `task check` | Runs everything CI checks: lint, spelling, types and tests |
 | `task build` | Builds the app for this platform into `bin/` |
+
+Words that cspell does not know, such as names of people and tools, go into `cspell.config.yaml`.
 
 The decisions behind the setup are recorded in [docs/adr](docs/adr/README.md).
 
